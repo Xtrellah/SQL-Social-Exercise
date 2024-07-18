@@ -1,9 +1,9 @@
 <?php
 
-$db = new PDO('mysql:host=db;dbname=social', 'root', 'password');
+declare(strict_types = 1);
 
-$db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-
+require_once 'src/DatabaseConnector.php';
+$db = DatabaseConnector::connect();
 
 $query = $db->prepare('SELECT `users`.`id` AS `user_id`, `users`.`username`, `posts`.`title`, `posts`.`image`, `posts`.`content` 
                                 FROM `users` 
@@ -13,6 +13,9 @@ $query = $db->prepare('SELECT `users`.`id` AS `user_id`, `users`.`username`, `po
 $query->execute();
 $users = $query->fetchAll();
 
+?>
+    <h1>Postagram</h1>
+<?php
 // POST
 echo '<ul>';
 foreach ($users as $user) {
