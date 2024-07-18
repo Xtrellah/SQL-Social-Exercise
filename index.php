@@ -2,8 +2,9 @@
 
 declare(strict_types = 1);
 
-require_once 'src/DatabaseConnector.php';
+require_once 'SRC/DatabaseConnector.php';
 $db = DatabaseConnector::connect();
+require_once 'SRC/Models/PostsModel.php';
 
 $query = $db->prepare('SELECT `users`.`id` AS `user_id`, `users`.`username`, `posts`.`title`, `posts`.`image`, `posts`.`content` 
                                 FROM `users` 
@@ -13,9 +14,11 @@ $query = $db->prepare('SELECT `users`.`id` AS `user_id`, `users`.`username`, `po
 $query->execute();
 $users = $query->fetchAll();
 
-?>
-    <h1>Postagram</h1>
+$posts = $PostsModel->getAllPosts();
+
+?><h1>Postagram</h1>
 <?php
+
 // POST
 echo '<ul>';
 foreach ($users as $user) {
