@@ -31,4 +31,19 @@ class PostsModel {
         ]);
     }
 
+    public function getPostById(int $id): Post
+    {
+        $query = $this->db->prepare('
+            SELECT `posts`.`id`, `posts`.`title`, `posts`.`image`, `posts`.`content`, `categories`.`name` AS `category` 
+                FROM `posts` 
+                LEFT JOIN `categories`
+                ON `posts`.`category_id` = `categories`.`id`
+                WHERE `posts`.`id` = :id
+        ');
+        $query->setFetchMode(PDO::FETCH_CLASS, Post::class);
+        $query->execute(['id' => $id]);
+        return $query->fetch();
+    }
+
+
 }

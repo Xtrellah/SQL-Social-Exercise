@@ -7,6 +7,7 @@ class Post {
     private string $title;
     private string $image;
     private string $category;
+    private string $content;
 
     public function getId(): int
     {
@@ -27,4 +28,10 @@ class Post {
     {
         return $this->category;
     }
+
+    public function getContent(): string
+    {
+        return $this->content;
+    }
+
 }

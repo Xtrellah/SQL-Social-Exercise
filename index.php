@@ -8,10 +8,18 @@ declare(strict_types = 1);
 require_once 'SRC/DatabaseConnector.php';
 $db = DatabaseConnector::connect();
 require_once 'SRC/Models/PostsModel.php';
+require_once 'SRC/Entities/Post.php';
+require_once 'SRC/Services/PostService.php';
 
 // INSTANTIATE MODEL
 $postsModel = new PostsModel($db);
 
+// PINNED POST
+$posts = $postsModel->getPostById(41);
+echo '<h2>Pinned Post</h2>';
+echo PostService::displayPost($posts);
+
+// NEW POST FORM
 ?>
     <h2>Make a post</h2>
     <pre>
@@ -40,19 +48,17 @@ isset($_POST['submitted'])) {
     $postsModel->createPost($title, $content, $image);
 }
 
-
-
 // FEED
-$posts = $postsModel->getAllPosts();
+$feed = $postsModel->getAllPosts();
 
 echo '<h2>Feed</h2>';
 echo '<div>';
-foreach ($posts as $user) {
+foreach ($feed as $post) {
     echo "<div>
-                <h3>@{$user['username']}</h3>
-                <h4>{$user['title']}</h4>
-                <img alt='image' src='{$user['image']}'/>
-                <p>{$user['content']}</p>
+                <h3>@{$post['username']}</h3>
+                <h4>{$post['title']}</h4>
+                <img alt='image' src='{$post['image']}' width='400px' height='400px'/>
+                <p>{$post['content']}</p>
           </div>
         <br>";
 }
