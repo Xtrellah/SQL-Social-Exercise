@@ -1,6 +1,8 @@
 <?php
-
 declare(strict_types = 1);
+?>
+    <h1>Postagram</h1>
+<?php
 
 // IMPORTS
 require_once 'SRC/DatabaseConnector.php';
@@ -11,19 +13,17 @@ require_once 'SRC/Models/PostsModel.php';
 $postsModel = new PostsModel($db);
 
 ?>
-    <h1>Postagram</h1>
-
     <h2>Make a post</h2>
     <pre>
         <form method="post">
             <label for="title">Title</label>
-            <input type="text" id=$title name="title" />
+            <input type="text" id=title name="title" />
 
             <label for="content">Content</label>
-            <input type="text" id=$content name="content" />
+            <input type="text" id=content name="content" />
 
             <label for="image">Image</label>
-            <input type="text" id=$image name="image" />
+            <input type="text" id=image name="image" />
 
             <input type="submit" name="submitted" value="Post"/>
         </form>
@@ -31,13 +31,16 @@ $postsModel = new PostsModel($db);
 <?php
 
 // NEW POST
-if (isset($_POST['submitted'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' &&
+isset($_POST['submitted'])) {
     $title = $_POST['title'];
     $content = $_POST['content'];
     $image = $_POST['image'];
+
+    $postsModel->createPost($title, $content, $image);
 }
 
-$postsModel->createPost('title', 'content', 'image');
+
 
 // FEED
 $posts = $postsModel->getAllPosts();
