@@ -10,6 +10,7 @@ $db = DatabaseConnector::connect();
 require_once 'SRC/Models/PostsModel.php';
 require_once 'SRC/Entities/Post.php';
 require_once 'SRC/Services/PostService.php';
+require_once 'SRC/Services/FeedService.php';
 
 // INSTANTIATE MODEL
 $postsModel = new PostsModel($db);
@@ -49,17 +50,6 @@ isset($_POST['submitted'])) {
 }
 
 // FEED
-$feed = $postsModel->getAllPosts();
-
-echo '<h2>Feed</h2>';
-echo '<div>';
-foreach ($feed as $post) {
-    echo "<div>
-                <h3>@{$post['username']}</h3>
-                <h4>{$post['title']}</h4>
-                <img alt='image' src='{$post['image']}' width='400px' height='400px'/>
-                <p>{$post['content']}</p>
-          </div>
-        <br>";
-}
-echo '</div>';
+$feedService = new
+FeedService($postsModel);
+$feedService->displayFeed();
